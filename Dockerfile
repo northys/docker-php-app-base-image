@@ -37,11 +37,11 @@ RUN apk --update add \
         && chmod +x /bin/composer
 
 # Setup php-pm
-ADD .docker/app/usr/local/etc/php/conf.d/app.ini /usr/local/etc/php/conf.d/app.ini
-ADD .docker/app/usr/local/etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
+ADD usr/local/etc/php/conf.d/app.ini /usr/local/etc/php/conf.d/app.ini
+ADD usr/local/etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 # Setup nginx
-ADD .docker/app/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
+ADD etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 
 # set dumb-init as entrypoint and run both php-fpm and nginx as child process of dumb-init
 ENTRYPOINT ["/usr/bin/dumb-init"]
