@@ -7,7 +7,7 @@ This image has production-ready configuration of php-fpm [inspired by symfony](h
 ## php-fpm setup
 
 ```dockerfile
-ADD .docker/app/usr/local/etc/php/conf.d/app.ini.production /usr/local/etc/php/conf.d/app.ini
+ADD .docker/app/usr/local/etc/php/conf.d/app.ini /usr/local/etc/php/conf.d/app.ini
 ADD .docker/app/usr/local/etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
 ```
 
