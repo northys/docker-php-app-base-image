@@ -1,0 +1,50 @@
+FROM php:7.2.15-fpm-alpine
+
+WORKDIR /srv
+
+RUN apk --update add \
+    curl \
+    bash \
+    build-base \
+    libmemcached-dev \
+    libmcrypt-dev \
+    libxml2-dev \
+    zlib-dev \
+    autoconf \
+    cyrus-sasl-dev \
+    libgsasl-dev \
+    # Install extensions
+    && docker-php-ext-install \
+        opcache \
+        bcmath \
+        mbstring \
+        pdo \
+        tokenizer \
+        xml \
+        pcntl \
+    && apk --update add postgresql-dev \
+        && docker-php-ext-install pgsql pdo_pgsql \
+    && apk --update add libzip-dev \
+        && docker-php-ext-configure zip --with-libzip \
+        && docker-php-ext-install zip \
+    && pecl channel-update pecl.php.net \
+        && pecl install mcrypt-1.0.1 \
+    && pecl install -o -f redis \
+        &&  rm -rf /tmp/pear \
+        &&  docker-php-ext-enable redis \
+    # Install composer
+    && curl https://getcomposer.org/composer.phar -o /bin/composer \
+        && chmod +x /bin/composer
+
+# Setup php-pm
+ADD .docker/app/usr/local/etc/php/conf.d/app.ini.production /usr/local/etc/php/conf.d/app.ini
+ADD .docker/app/usr/local/etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
+
+# Setup nginx
+ADD .docker/app/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
+
+# set dumb-init as entrypoint and run both php-fpm and nginx as child process of dumb-init
+ENTRYPOINT ["/usr/bin/dumb-init"]
+
+CMD ["--", "/opt/docker-entrypoint.bash"]
+
