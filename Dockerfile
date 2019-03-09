@@ -40,9 +40,10 @@ RUN apk --update add \
 ADD usr/local/etc/php/conf.d/app.ini /usr/local/etc/php/conf.d/app.ini
 ADD usr/local/etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
 
-# Install dumb-init and nginx
-ADD .docker/app/opt/docker-entrypoint.bash /opt/
+# Add docker entrypoint which runs both nginx and php-fpm
+ADD opt/docker-entrypoint.bash /opt/
 
+# Install dumb-init, nginx
 RUN apk add --update dumb-init nginx \
     && mkdir -p /run/nginx \
     && chmod +x /opt/docker-entrypoint.bash
