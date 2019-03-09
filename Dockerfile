@@ -40,6 +40,13 @@ RUN apk --update add \
 ADD usr/local/etc/php/conf.d/app.ini /usr/local/etc/php/conf.d/app.ini
 ADD usr/local/etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
 
+# Install dumb-init and nginx
+ADD .docker/app/opt/docker-entrypoint.bash /opt/
+
+RUN apk add --update dumb-init nginx \
+    && mkdir -p /run/nginx \
+    && chmod +x /opt/docker-entrypoint.bash
+
 # Setup nginx
 ADD etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 
