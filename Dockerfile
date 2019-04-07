@@ -34,7 +34,7 @@ RUN apk --update add \
         && docker-php-ext-configure zip --with-libzip \
         && docker-php-ext-install zip \
     && pecl channel-update pecl.php.net \
-        && pecl install mcrypt-${PHP_VERSION} \
+        && pecl install mcrypt-${MCRYPT_VERSION} \
     && pecl install -o -f redis \
         &&  rm -rf /tmp/pear \
         &&  docker-php-ext-enable redis \
