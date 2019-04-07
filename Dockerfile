@@ -1,4 +1,5 @@
 ARG PHP_VERSION
+ARG MCRYPT_VERSION
 
 FROM php:${PHP_VERSION}-fpm-alpine
 
@@ -33,7 +34,7 @@ RUN apk --update add \
         && docker-php-ext-configure zip --with-libzip \
         && docker-php-ext-install zip \
     && pecl channel-update pecl.php.net \
-        && pecl install mcrypt-1.0.1 \
+        && pecl install mcrypt-${PHP_VERSION} \
     && pecl install -o -f redis \
         &&  rm -rf /tmp/pear \
         &&  docker-php-ext-enable redis \
