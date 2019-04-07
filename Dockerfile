@@ -1,4 +1,6 @@
-FROM php:7.2.15-fpm-alpine
+ARG PHP_VERSION
+
+FROM php:${PHP_VERSION}-fpm-alpine
 
 WORKDIR /srv
 
@@ -22,8 +24,11 @@ RUN apk --update add \
         tokenizer \
         xml \
         pcntl \
+    # install postgresql support + pdo
     && apk --update add postgresql-dev \
         && docker-php-ext-install pgsql pdo_pgsql \
+    # install mysqlsupport + pdo
+    && docker-php-ext-install mysqli pdo pdo_mysql \
     && apk --update add libzip-dev \
         && docker-php-ext-configure zip --with-libzip \
         && docker-php-ext-install zip \
