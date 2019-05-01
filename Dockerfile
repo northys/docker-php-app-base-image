@@ -9,7 +9,6 @@ RUN apk --update add \
     bash \
     build-base \
     libmemcached-dev \
-    libmcrypt-dev \
     libxml2-dev \
     zlib-dev \
     autoconf \
@@ -32,8 +31,6 @@ RUN apk --update add \
     && apk --update add libzip-dev \
         && docker-php-ext-configure zip --with-libzip \
         && docker-php-ext-install zip \
-    && docker-php-ext-configure mcrypt \
-        && docker-php-ext-install mcrypt \
     && pecl install -o -f redis \
         &&  rm -rf /tmp/pear \
         &&  docker-php-ext-enable redis \
