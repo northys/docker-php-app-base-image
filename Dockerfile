@@ -14,8 +14,10 @@ RUN apk --update add \
     autoconf \
     cyrus-sasl-dev \
     libgsasl-dev \
+    icu-dev \
     # Install extensions
     && docker-php-ext-install \
+        intl \
         opcache \
         bcmath \
         mbstring \
