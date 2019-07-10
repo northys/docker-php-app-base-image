@@ -23,6 +23,7 @@ RUN apk --update add \
         mbstring \
         pdo \
         tokenizer \
+        json \
         xml \
         pcntl \
     # install postgresql support + pdo
