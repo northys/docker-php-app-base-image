@@ -6,6 +6,7 @@ WORKDIR /srv
 
 RUN apk --update add \
     curl \
+    git \
     bash \
     build-base \
     libmemcached-dev \
