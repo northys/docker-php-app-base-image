@@ -10,9 +10,15 @@ services:
     build:
       context: .
       args:
-        PHP_VERSION: 7.2.15
+        PHP_VERSION: 7.2
   php-7.3:
     build:
       context: .
       args:
         PHP_VERSION: 7.3
+
+  php-7.4:
+    build:
+      context: .
+      args:
+        PHP_VERSION: 7.4.0RC1
