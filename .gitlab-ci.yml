@@ -13,6 +13,7 @@ before_script:
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION"
 
 build-7.4:
+  allow_failure: true
   extends: .build
   variables:
     PHP_VERSION: "7.4.0RC1"
