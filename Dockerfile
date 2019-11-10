@@ -36,8 +36,10 @@ RUN apk --update add \
         && docker-php-ext-configure zip --with-libzip \
         && docker-php-ext-install zip \
     && pecl install -o -f redis \
-        &&  rm -rf /tmp/pear \
         &&  docker-php-ext-enable redis \
+    && pecl install -o -f mysql_xdevapi \
+        && docker-php-ext-enable mysql_xdevapi \
+    &&  rm -rf /tmp/pear \
     # Install composer
     && curl https://getcomposer.org/composer.phar -o /bin/composer \
         && chmod +x /bin/composer
