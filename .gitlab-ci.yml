@@ -16,7 +16,7 @@ build-7.4:
   allow_failure: true
   extends: .build
   variables:
-    PHP_VERSION: "7.4.0RC5"
+    PHP_VERSION: "7.4"
 
 build-7.3:
   extends: .build
