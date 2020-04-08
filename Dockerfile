@@ -1,6 +1,6 @@
 ARG PHP_VERSION
 
-FROM php:${PHP_VERSION}-fpm-alpine
+FROM php:${PHP_VERSION}-fpm-alpine as vanilla
 
 WORKDIR /srv
 
@@ -37,10 +37,7 @@ RUN apk --update add \
         && docker-php-ext-install zip \
     && pecl install -o -f redis \
         &&  rm -rf /tmp/pear \
-        &&  docker-php-ext-enable redis \
-    # Install composer
-    && curl https://getcomposer.org/composer.phar -o /bin/composer \
-        && chmod +x /bin/composer
+        &&  docker-php-ext-enable redis
 
 # Setup php-pm
 ADD usr/local/etc/php/conf.d/app.ini /usr/local/etc/php/conf.d/app.ini
@@ -62,3 +59,8 @@ ENTRYPOINT ["/usr/bin/dumb-init"]
 
 CMD ["--", "/opt/docker-entrypoint.bash"]
 
+FROM vanilla AS composer
+
+# Install composer
+RUN curl https://getcomposer.org/composer.phar -o /bin/composer \
+        && chmod +x /bin/composer

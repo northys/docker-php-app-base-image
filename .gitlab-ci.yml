@@ -9,7 +9,8 @@ before_script:
 .build:
   stage: build
   script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE:$PHP_VERSION" --build-arg=PHP_VERSION="$PHP_VERSION" .
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$PHP_VERSION" --target vanilla --build-arg=PHP_VERSION="$PHP_VERSION" .
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer" --target composer --build-arg=PHP_VERSION="$PHP_VERSION" .
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION"
 
 build-7.4:
