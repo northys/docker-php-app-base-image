@@ -12,12 +12,7 @@ before_script:
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$PHP_VERSION" --target vanilla --build-arg=PHP_VERSION="$PHP_VERSION" .
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer" --target composer --build-arg=PHP_VERSION="$PHP_VERSION" .
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION"
-
-build-7.4:
-  allow_failure: true
-  extends: .build
-  variables:
-    PHP_VERSION: "7.4"
+    - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer"
 
 build-7.3:
   extends: .build
