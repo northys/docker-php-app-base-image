@@ -16,6 +16,7 @@ RUN apk --update add \
     cyrus-sasl-dev \
     libgsasl-dev \
     icu-dev \
+    oniguruma-dev \
     # Install extensions
     && docker-php-ext-install \
         intl \
@@ -33,7 +34,7 @@ RUN apk --update add \
     # install mysqlsupport + pdo
     && docker-php-ext-install mysqli pdo pdo_mysql \
     && apk --update add libzip-dev \
-        && docker-php-ext-configure zip --with-libzip \
+        && docker-php-ext-configure zip \
         && docker-php-ext-install zip \
     && pecl install -o -f redis \
         &&  rm -rf /tmp/pear \
