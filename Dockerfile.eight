@@ -33,17 +33,12 @@ RUN apk --update add \
     libjpeg \
     libjpeg-turbo-dev \
     # Configure extensions
-    && bash -c 'if [[ "$PHP_VERSION" == *"7.4"* ]]; then docker-php-ext-configure gd --with-freetype --with-webp --with-jpeg; else docker-php-ext-configure gd --with-freetype-dir=/usr/lib/ --with-png-dir=/usr/lib/ --with-jpeg-dir=/usr/lib/ --with-webp-dir=/usr/lib/ --with-gd; fi;' \
+    && docker-php-ext-configure gd --with-freetype --with-webp --with-jpeg \
     # Install extensions
     && docker-php-ext-install \
         intl \
         opcache \
         bcmath \
-        mbstring \
-        pdo \
-        tokenizer \
-        json \
-        xml \
         pcntl \
         gd \
     # install postgresql support + pdo
@@ -56,7 +51,14 @@ RUN apk --update add \
         && docker-php-ext-install zip \
     && pecl install -o -f redis \
         &&  rm -rf /tmp/pear \
-        &&  docker-php-ext-enable redis
+        &&  docker-php-ext-enable redis \
+    # Install composer
+    && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce9024fc62c56153228907f1545c228516cbf63f885e036d37e9a59d27d63f46af1d4d07ee0f76181c7d3') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
+    && php composer-setup.php \
+    && php -r "unlink('composer-setup.php');" \
+    && mv composer.phar /usr/bin/composer \
+    && chmod +x /usr/bin/composer
 
 # Setup php-pm
 ADD usr/local/etc/php/conf.d/app.ini /usr/local/etc/php/conf.d/app.ini
@@ -77,8 +79,6 @@ ADD etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 ENTRYPOINT ["/usr/bin/dumb-init"]
 
 CMD ["--", "/opt/docker-entrypoint.bash"]
-
-FROM vanilla AS composer
 
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \

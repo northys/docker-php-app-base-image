@@ -1,4 +1,4 @@
-version: "3.6"
+version: "3.7"
 
 services:
   php-7.1:
@@ -16,9 +16,14 @@ services:
       context: .
       args:
         PHP_VERSION: 7.3
-
   php-7.4:
     build:
       context: .
       args:
         PHP_VERSION: 7.4
+  php-8.0:
+    build:
+      context: .
+      dockerfile: Dockerfile.eight
+      args:
+        PHP_VERSION: 8.0
