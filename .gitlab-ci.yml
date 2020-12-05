@@ -27,16 +27,16 @@ stages:
 .release: &release
   image: docker:latest
   stage: release
+  services:
+    - docker:dind
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
     # vanilla
-    - docker image rm $CI_REGISTRY_IMAGE:$PHP_VERSION || true
     - docker pull $CI_REGISTRY_IMAGE:$PHP_VERSION-rc
     - docker tag $CI_REGISTRY_IMAGE:$PHP_VERSION-rc $CI_REGISTRY_IMAGE:$PHP_VERSION
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION"
     # composer
-    - docker image rm $CI_REGISTRY_IMAGE:$PHP_VERSION-composer || true
     - docker pull $CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc
     - docker tag $CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc $CI_REGISTRY_IMAGE:$PHP_VERSION
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer"
