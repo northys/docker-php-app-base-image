@@ -55,8 +55,8 @@ RUN apk --update add \
         && docker-php-ext-configure zip \
         && docker-php-ext-install zip \
     && pecl install -o -f redis \
-        &&  rm -rf /tmp/pear \
-        &&  docker-php-ext-enable redis
+        && rm -rf /tmp/pear \
+        && docker-php-ext-enable redis
 
 # Setup php-pm
 ADD usr/local/etc/php/conf.d/app.ini /usr/local/etc/php/conf.d/app.ini
