@@ -91,17 +91,3 @@ release-7.3:
   variables:
     PHP_VERSION: "7.3"
 
-build-7.2:
-  <<: *build
-  variables:
-    PHP_VERSION: "7.2"
-
-test-7.2:
-  <<: *test
-  variables:
-    PHP_VERSION: "7.2"
-
-release-7.2:
-  <<: *release
-  variables:
-    PHP_VERSION: "7.2"
