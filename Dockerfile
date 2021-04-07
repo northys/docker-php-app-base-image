@@ -34,13 +34,11 @@ RUN apt-get install -y \
         bcmath \
         mbstring \
         pdo \
-        tokenizer \
         json \
         xml \
         pcntl \
         gd \
-        pgsql \
-        pdo pdo_pgsql \
+        pgsql pdo_pgsql \
         mysqli pdo_mysql \
     && docker-php-ext-configure zip && docker-php-ext-install zip \
     && pecl install -o -f redis \
