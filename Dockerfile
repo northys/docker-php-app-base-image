@@ -1,37 +1,30 @@
 ARG PHP_VERSION
 
-FROM php:${PHP_VERSION}-fpm-alpine AS vanilla
+FROM php:${PHP_VERSION}-fpm AS vanilla
 
 WORKDIR /srv
 
-RUN echo $PHP_VERSION
-RUN apk add gnu-libiconv --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+RUN apt-get update
 
-
-RUN apk --update add \
+RUN apt-get install -y \
     git \
     curl \
     bash \
-    build-base \
-    libmemcached-dev \
+    build-essential \
     libxml2-dev \
-    zlib-dev \
     autoconf \
-    cyrus-sasl-dev \
-    libgsasl-dev \
-    icu-dev \
-    oniguruma-dev \
+    libicu-dev \
+    # postgresql deps
+    libpq-dev \
+    # zip deps
+    libzip-dev \
+    # mbstring deps
+    libonig-dev \
     # gd deps
-    freetype \
     libwebp-dev \
-    libpng \
-    libjpeg-turbo \
-    freetype-dev \
+    libfreetype6-dev \
     libpng-dev \
-    jpeg-dev \
-    libjpeg \
-    libjpeg-turbo-dev \
+    libjpeg-dev \
     # Configure extensions
     && bash -c 'if [[ "$PHP_VERSION" == *"7.4"* ]]; then docker-php-ext-configure gd --with-freetype --with-webp --with-jpeg; else docker-php-ext-configure gd --with-freetype-dir=/usr/lib/ --with-png-dir=/usr/lib/ --with-jpeg-dir=/usr/lib/ --with-webp-dir=/usr/lib/ --with-gd; fi;' \
     # Install extensions
@@ -46,14 +39,10 @@ RUN apk --update add \
         xml \
         pcntl \
         gd \
-    # install postgresql support + pdo
-    && apk --update add postgresql-dev \
-        && docker-php-ext-install pgsql pdo_pgsql \
-    # install mysqlsupport + pdo
-    && docker-php-ext-install mysqli pdo pdo_mysql \
-    && apk --update add libzip-dev \
-        && docker-php-ext-configure zip \
-        && docker-php-ext-install zip \
+        pgsql \
+        pdo pdo_pgsql \
+        mysqli pdo_mysql \
+    && docker-php-ext-configure zip && docker-php-ext-install zip \
     && pecl install -o -f redis \
         && rm -rf /tmp/pear \
         && docker-php-ext-enable redis
@@ -66,12 +55,12 @@ ADD usr/local/etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
 ADD opt/docker-entrypoint.bash /opt/
 
 # Install dumb-init, nginx
-RUN apk add --update dumb-init nginx \
+RUN apt-get install -y dumb-init nginx \
     && mkdir -p /run/nginx \
     && chmod +x /opt/docker-entrypoint.bash
 
 # Setup nginx
-ADD etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
+ADD etc/nginx/conf.d/default.conf /etc/nginx/sites-enabled/default
 
 # set dumb-init as entrypoint and run both php-fpm and nginx as child process of dumb-init
 ENTRYPOINT ["/usr/bin/dumb-init"]
