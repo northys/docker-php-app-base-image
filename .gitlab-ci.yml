@@ -51,10 +51,10 @@ build-8.1-rc:
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION-rc"
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc"
 
-test-8.1-rc:
-  <<: *test
-  variables:
-    PHP_VERSION: "8.1-rc"
+#test-8.1-rc:
+#  <<: *test
+#  variables:
+#    PHP_VERSION: "8.1-rc"
 
 release-8.1-rc:
   <<: *release
