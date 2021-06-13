@@ -2,5 +2,10 @@
     "require-dev": {
         "phpunit/phpunit": "*",
         "nette/utils": "*"
+    },
+    "config": {
+        "platform": {
+            "php": "8.0"
+        }
     }
 }
