@@ -8,7 +8,6 @@ RUN apt-get update
 
 RUN apt-get install -y \
     git \
-    openssh \
     curl \
     bash \
     build-essential \
