@@ -30,7 +30,7 @@ RUN apt-get install -y \
     # Install extensions
     && docker-php-ext-install \
         intl \
-#        opcache \
+        opcache \
         bcmath \
         mbstring \
         pdo \
