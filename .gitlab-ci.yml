@@ -46,7 +46,7 @@ build-8.0:
   variables:
     PHP_VERSION: "8.0"
   script:
-i    - docker build -f Dockerfile.eight --pull -t "$CI_REGISTRY_IMAGE:$PHP_VERSION-rc" --target vanilla --build-arg=PHP_VERSION="$PHP_VERSION" .
+    - docker build -f Dockerfile.eight --pull -t "$CI_REGISTRY_IMAGE:$PHP_VERSION-rc" --target vanilla --build-arg=PHP_VERSION="$PHP_VERSION" .
     - docker build -f Dockerfile.eight --pull -t "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc" --target composer --build-arg=PHP_VERSION="$PHP_VERSION" .
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION-rc"
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc"
