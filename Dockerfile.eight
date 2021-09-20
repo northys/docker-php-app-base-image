@@ -59,6 +59,7 @@ RUN apt-get install -y dumb-init nginx \
 
 # Setup nginx
 ADD etc/nginx/conf.d/default.conf /etc/nginx/sites-enabled/default
+RUN sed -i 's/\# server_tokens/server_tokens/g' /etc/nginx/nginx.conf
 
 # set dumb-init as entrypoint and run both php-fpm and nginx as child process of dumb-init
 ENTRYPOINT ["/usr/bin/dumb-init"]
