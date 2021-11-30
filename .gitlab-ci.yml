@@ -41,25 +41,25 @@ stages:
     - docker tag $CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc $CI_REGISTRY_IMAGE:$PHP_VERSION-composer
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer"
 
-build-8.1-rc:
+build-8.1:
   <<: *build
   variables:
-    PHP_VERSION: "8.1-rc"
+    PHP_VERSION: "8.1"
   script:
     - docker build -f Dockerfile.eightone --pull -t "$CI_REGISTRY_IMAGE:$PHP_VERSION-rc" --target vanilla --build-arg=PHP_VERSION="$PHP_VERSION" .
     - docker build -f Dockerfile.eightone --pull -t "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc" --target composer --build-arg=PHP_VERSION="$PHP_VERSION" .
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION-rc"
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc"
 
-test-8.1-rc:
+test-8.1:
   <<: *test
   variables:
-    PHP_VERSION: "8.1-rc"
+    PHP_VERSION: "8.1"
 
-release-8.1-rc:
+release-8.1:
   <<: *release
   variables:
-    PHP_VERSION: "8.1-rc"
+    PHP_VERSION: "8.1"
 
 build-8.0:
   <<: *build
