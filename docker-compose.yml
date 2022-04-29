@@ -1,16 +1,6 @@
 version: "3.7"
 
 services:
-  php-7.1:
-    build:
-      context: .
-      args:
-        PHP_VERSION: 7.1
-  php-7.2:
-    build:
-      context: .
-      args:
-        PHP_VERSION: 7.2
   php-7.3:
     build:
       context: .
@@ -24,13 +14,11 @@ services:
   php-8.0:
     build:
       context: .
-      dockerfile: Dockerfile.eight
       args:
         PHP_VERSION: 8.0
   php-8.1:
     build:
       context: .
-      dockerfile: Dockerfile.eight
       args:
         PHP_VERSION: 8.1
 
