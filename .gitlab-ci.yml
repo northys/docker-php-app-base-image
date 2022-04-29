@@ -50,11 +50,15 @@ build-8.1:
 
 test-8.1:
   <<: *test
+  needs:
+    - build-8.1
   variables:
     PHP_VERSION: "8.1"
 
 release-8.1:
   <<: *release
+  needs:
+    - test-8.1
   variables:
     PHP_VERSION: "8.1"
 
@@ -65,11 +69,15 @@ build-8.0:
 
 test-8.0:
   <<: *test
+  needs:
+    - build-8.0
   variables:
     PHP_VERSION: "8.0"
 
 release-8.0:
   <<: *release
+  needs:
+    - test-8.0
   variables:
     PHP_VERSION: "8.0"
 
@@ -80,11 +88,15 @@ build-7.4:
 
 test-7.4:
   <<: *test
+  needs:
+    - build-7.4
   variables:
     PHP_VERSION: "7.4"
 
 release-7.4:
   <<: *release
+  needs:
+    - test-7.4
   variables:
     PHP_VERSION: "7.4"
 
@@ -95,11 +107,15 @@ build-7.3:
 
 test-7.3:
   <<: *test
+  needs:
+    - build-7.3
   variables:
     PHP_VERSION: "7.3"
 
 release-7.3:
   <<: *release
+  needs:
+    - test-7.3
   variables:
     PHP_VERSION: "7.3"
 
