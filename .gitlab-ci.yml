@@ -40,6 +40,8 @@ stages:
     - docker pull $CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc
     - docker tag $CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc $CI_REGISTRY_IMAGE:$PHP_VERSION-composer
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer"
+  only:
+    - master
 
 build-8.1:
   <<: *build

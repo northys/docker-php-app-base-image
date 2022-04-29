@@ -2,48 +2,28 @@ ARG PHP_VERSION
 
 FROM php:${PHP_VERSION}-fpm AS vanilla
 
-WORKDIR /srv
+# Very convenient PHP extensions installer: https://github.com/mlocati/docker-php-extension-installer
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
-RUN apt-get update
-
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
     git \
     curl \
     bash \
-    build-essential \
-    libxml2-dev \
-    autoconf \
-    libicu-dev \
-    # postgresql deps
-    libpq-dev \
-    # zip deps
-    libzip-dev \
-    # mbstring deps
-    libonig-dev \
-    # gd deps
-    libwebp-dev \
-    libfreetype6-dev \
-    libpng-dev \
-    libjpeg-dev \
-    # Configure extensions
-    && bash -c 'if [[ "$PHP_VERSION" == *"7.4"* ]]; then docker-php-ext-configure gd --with-freetype --with-webp --with-jpeg; else docker-php-ext-configure gd --with-freetype-dir=/usr/lib/ --with-png-dir=/usr/lib/ --with-jpeg-dir=/usr/lib/ --with-webp-dir=/usr/lib/ --with-gd; fi;' \
     # Install extensions
-    && docker-php-ext-install \
+    && install-php-extensions \
         intl \
         opcache \
         bcmath \
         mbstring \
-        pdo \
-        json \
         xml \
         pcntl \
         gd \
-        pgsql pdo_pgsql \
+        imagick \
+        pgsql \
+        pdo pdo_pgsql \
         mysqli pdo_mysql \
-    && docker-php-ext-configure zip && docker-php-ext-install zip \
-    && pecl install -o -f redis \
-        && rm -rf /tmp/pear \
-        && docker-php-ext-enable redis
+        redis \
+        zip
 
 # Setup php-pm
 ADD usr/local/etc/php/conf.d/app.ini /usr/local/etc/php/conf.d/app.ini
