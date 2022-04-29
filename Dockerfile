@@ -5,7 +5,12 @@ FROM php:${PHP_VERSION}-fpm AS vanilla
 # Very convenient PHP extensions installer: https://github.com/mlocati/docker-php-extension-installer
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
+# Add docker entrypoint which runs both nginx and php-fpm
+ADD opt/docker-entrypoint.bash /opt/
+
 RUN apt-get update && apt-get install -y \
+    nginx \
+    dumb-init \
     git \
     curl \
     bash \
@@ -23,19 +28,14 @@ RUN apt-get update && apt-get install -y \
         pdo pdo_pgsql \
         mysqli pdo_mysql \
         redis \
-        zip
+        zip \
+    # Create /run/nginx directory for pid
+    && mkdir -p /run/nginx \
+    && chmod +x /opt/docker-entrypoint.bash
 
 # Setup php-pm
 ADD usr/local/etc/php/conf.d/app.ini /usr/local/etc/php/conf.d/app.ini
 ADD usr/local/etc/php-fpm.d/www.conf /usr/local/etc/php-fpm.d/www.conf
-
-# Add docker entrypoint which runs both nginx and php-fpm
-ADD opt/docker-entrypoint.bash /opt/
-
-# Install dumb-init, nginx
-RUN apt-get install -y dumb-init nginx \
-    && mkdir -p /run/nginx \
-    && chmod +x /opt/docker-entrypoint.bash
 
 # Setup nginx
 ADD etc/nginx/conf.d/default.conf /etc/nginx/sites-enabled/default
