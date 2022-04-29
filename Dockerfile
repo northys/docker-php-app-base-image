@@ -23,7 +23,6 @@ RUN apt-get update && apt-get install -y \
         xml \
         pcntl \
         gd \
-        imagick \
         pgsql \
         pdo pdo_pgsql \
         mysqli pdo_mysql \
