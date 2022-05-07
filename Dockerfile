@@ -2,6 +2,8 @@ ARG PHP_VERSION
 
 FROM php:${PHP_VERSION}-fpm AS vanilla
 
+WORKDIR /srv
+
 # Very convenient PHP extensions installer: https://github.com/mlocati/docker-php-extension-installer
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
