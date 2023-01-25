@@ -43,6 +43,25 @@ stages:
   only:
     - master
 
+build-8.2:
+  <<: *build
+  variables:
+    PHP_VERSION: "8.2"
+
+test-8.2:
+  <<: *test
+  needs:
+    - build-8.2
+  variables:
+    PHP_VERSION: "8.2"
+
+release-8.2:
+  <<: *release
+  needs:
+    - test-8.2
+  variables:
+    PHP_VERSION: "8.2"
+
 build-8.1:
   <<: *build
   variables:
