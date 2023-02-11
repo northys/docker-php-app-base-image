@@ -11,6 +11,7 @@ COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr
 ADD opt/docker-entrypoint.bash /opt/
 
 RUN apt-get update && apt-get install -y \
+    procps \
     nginx \
     dumb-init \
     git \

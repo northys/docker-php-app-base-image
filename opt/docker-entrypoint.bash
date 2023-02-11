@@ -1,3 +1,3 @@
 #!/usr/bin/dumb-init /bin/sh
-php-fpm -D
+php-fpm &
 nginx -g "daemon off;"
