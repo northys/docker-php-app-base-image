@@ -20,7 +20,7 @@ stages:
   image: $CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc
   stage: test
   before_script:
-    - composer update --ignore-platform-reqs
+    - composer update
   script:
     - vendor/bin/phpunit tests/
 
