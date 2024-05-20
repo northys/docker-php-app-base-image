@@ -29,7 +29,7 @@ class GdExtensionTest extends TestCase
         self::assertEquals(200, $resizedImage->getWidth());
     }
 
-    public function dataProviderLoadAndSave()
+    public static function dataProviderLoadAndSave()
     {
         return [
             [
