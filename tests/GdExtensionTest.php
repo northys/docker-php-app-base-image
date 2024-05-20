@@ -4,6 +4,7 @@ namespace Tests;
 
 use Nette\Utils\Image;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class GdExtensionTest extends TestCase
 {
@@ -15,6 +16,7 @@ class GdExtensionTest extends TestCase
     /**
      * @dataProvider dataProviderLoadAndSave
      */
+    #[DataProvider('dataProviderLoadAndSave')]
     public function testLoadAndSave(int $imageType, string $extension)
     {
         $tmpLocation = sys_get_temp_dir() . DIRECTORY_SEPARATOR . getmypid() . '.' . $extension;
