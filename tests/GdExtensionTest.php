@@ -12,9 +12,8 @@ class GdExtensionTest extends TestCase
         self::assertTrue(extension_loaded('gd'), 'extension_loaded reports true for "gd"');
     }
 
-    /**
-     * @dataProvider dataProviderLoadAndSave
-     */
+    #[DataProvider('dataProviderLoadAndSave')]
+
     public function testLoadAndSave(int $imageType, string $extension)
     {
         $tmpLocation = sys_get_temp_dir() . DIRECTORY_SEPARATOR . getmypid() . '.' . $extension;
