@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y \
         pgsql \
         pdo pdo_pgsql \
         mysqli pdo_mysql \
-        redis \
+#        redis \
         zip \
     # Create /run/nginx directory for pid
     && mkdir -p /run/nginx \

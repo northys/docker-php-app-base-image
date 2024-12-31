@@ -16,3 +16,8 @@ services:
       context: .
       args:
         PHP_VERSION: 8.3
+  php-8.4:
+    build:
+      context: .
+      args:
+        PHP_VERSION: 8.4-rc
