@@ -46,13 +46,13 @@ stages:
   script:
     # vanilla
     - docker manifest create $CI_REGISTRY_IMAGE:$PHP_VERSION \
-    - --amend $CI_REGISTRY_IMAGE:$PHP_VERSION-rc-amd64 \
-    - --amend $CI_REGISTRY_IMAGE:$PHP_VERSION-rc-arm64v8
+      --amend $CI_REGISTRY_IMAGE:$PHP_VERSION-rc-amd64 \
+      --amend $CI_REGISTRY_IMAGE:$PHP_VERSION-rc-arm64v8
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION"
     # composer
     - docker manifest create $CI_REGISTRY_IMAGE:$PHP_VERSION-composer \
-    - --amend $CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc-amd64 \
-    - --amend $CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc-arm64v8
+      --amend $CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc-amd64 \
+      --amend $CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc-arm64v8
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer"
   only:
     - master
