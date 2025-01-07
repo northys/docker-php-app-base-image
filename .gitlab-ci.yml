@@ -16,13 +16,13 @@ stages:
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE:$PHP_VERSION-rc" --target vanilla --build-arg=PHP_VERSION="$PHP_VERSION" .
-    - docker build --pull -t "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc" --target composer --build-arg=PHP_VERSION="$PHP_VERSION" .
-    - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION-rc"
-    - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc"
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$PHP_VERSION-rc-${ARCH}" --target vanilla --build-arg=PHP_VERSION="$PHP_VERSION" .
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc-${ARCH}" --target composer --build-arg=PHP_VERSION="$PHP_VERSION" .
+    - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION-rc-${ARCH}"
+    - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc-${ARCH}"
 
 .test: &test
-  image: $CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc
+  image: $CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc-${ARCH}
   stage: test
   parallel:
     matrix:
@@ -37,23 +37,22 @@ stages:
 .release: &release
   image: docker:latest
   stage: release
-  parallel:
-    matrix:
-      - ARCH: [arm64v8, amd64]
   tags:
-    - ${ARCH}
+    - amd64
   services:
     - docker:dind
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
     # vanilla
-    - docker pull $CI_REGISTRY_IMAGE:$PHP_VERSION-rc
-    - docker tag $CI_REGISTRY_IMAGE:$PHP_VERSION-rc $CI_REGISTRY_IMAGE:$PHP_VERSION
+    - docker manifest create $CI_REGISTRY_IMAGE:$PHP_VERSION \
+    - --amend $CI_REGISTRY_IMAGE:$PHP_VERSION-rc-amd64 \
+    - --amend $CI_REGISTRY_IMAGE:$PHP_VERSION-rc-arm64v8
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION"
     # composer
-    - docker pull $CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc
-    - docker tag $CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc $CI_REGISTRY_IMAGE:$PHP_VERSION-composer
+    - docker manifest create $CI_REGISTRY_IMAGE:$PHP_VERSION-composer \
+    - --amend $CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc-amd64 \
+    - --amend $CI_REGISTRY_IMAGE:$PHP_VERSION-composer-rc-arm64v8
     - docker push "$CI_REGISTRY_IMAGE:$PHP_VERSION-composer"
   only:
     - master
@@ -133,4 +132,3 @@ release-8.1:
     - test-8.1
   variables:
     PHP_VERSION: "8.1"
-
