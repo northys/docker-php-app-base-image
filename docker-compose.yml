@@ -20,4 +20,9 @@ services:
     build:
       context: .
       args:
-        PHP_VERSION: 8.4-rc
+        PHP_VERSION: 8.4
+  php-8.5:
+    build:
+      context: .
+      args:
+        PHP_VERSION: 8.5-rc
