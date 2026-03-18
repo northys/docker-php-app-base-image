@@ -132,22 +132,3 @@ release-8.2:
     - test-8.2
   variables:
     PHP_VERSION: "8.2"
-
-build-8.1:
-  <<: *build
-  variables:
-    PHP_VERSION: "8.1"
-
-test-8.1:
-  <<: *test
-  needs:
-    - build-8.1
-  variables:
-    PHP_VERSION: "8.1"
-
-release-8.1:
-  <<: *release
-  needs:
-    - test-8.1
-  variables:
-    PHP_VERSION: "8.1"
